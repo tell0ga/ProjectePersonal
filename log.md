@@ -33,3 +33,7 @@ Historial cronológico del trabajo realizado sobre `tell0ga/ProjectePersonal`.
 - Se añadió un `span` alrededor de «Spotify» en el `h1` de `index.html`.
 - Se añadió en `style.css` la clase `.spotify` con el verde `#1ED760`.
 - «vs Youtube» conserva el rojo anterior; no se cambió `script.js`.
+
+## 2026-11-04 — «VS» en blanco
+- Se modificó únicamente `index.html`: «vs» se envolvió en un `span` con color blanco.
+- Spotify sigue verde y YouTube rojo; no se cambiaron CSS ni JavaScript.
