@@ -24,3 +24,7 @@ Historial cronológico del trabajo realizado sobre `tell0ga/ProjectePersonal`.
 - Se añadió un contenedor flex al `body`, con centrado, altura mínima de pantalla y alineación del texto.
 - La estructura de `index.html` y el comportamiento de `script.js` permanecieron intactos.
 - Se confirmó la actualización del archivo en GitHub; no se verificó visualmente la web publicada.
+
+## 2026-11-04 — Cuento en Markdown
+- Se creó `barro.md` con el cuento original «El pueblo de barro».
+- No se modificaron los archivos HTML, CSS ni JavaScript.
