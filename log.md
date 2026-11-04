@@ -28,3 +28,8 @@ Historial cronológico del trabajo realizado sobre `tell0ga/ProjectePersonal`.
 ## 2026-11-04 — Cuento en Markdown
 - Se creó `barro.md` con el cuento original «El pueblo de barro».
 - No se modificaron los archivos HTML, CSS ni JavaScript.
+
+## 2026-11-04 — Color de Spotify en el título
+- Se añadió un `span` alrededor de «Spotify» en el `h1` de `index.html`.
+- Se añadió en `style.css` la clase `.spotify` con el verde `#1ED760`.
+- «vs Youtube» conserva el rojo anterior; no se cambió `script.js`.
