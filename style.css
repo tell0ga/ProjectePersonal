@@ -21,6 +21,10 @@ h1 {
   letter-spacing: -2px;
 }
 
+.spotify {
+  color: #1ed760;
+}
+
 button {
   background-color: #ff2929;
   color: white;
