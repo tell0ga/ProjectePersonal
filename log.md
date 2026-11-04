@@ -18,3 +18,9 @@ Historial cronológico del trabajo realizado sobre `tell0ga/ProjectePersonal`.
 - Se crean cuatro archivos Markdown en la raíz del repositorio: `personalidad.md`, `contexto.md`, `memoria.md` y `log.md`.
 - Objetivo: disponer de un contexto consultable y mantener un historial de futuras acciones.
 - En próximas sesiones, leer estos archivos al comenzar el trabajo en este repositorio y añadir al log los cambios relevantes cuando el usuario lo autorice.
+
+## 2026-11-04 — Contenido centrado
+- Se modificó únicamente `style.css` para centrar horizontal y verticalmente el título, el subtítulo y el botón.
+- Se añadió un contenedor flex al `body`, con centrado, altura mínima de pantalla y alineación del texto.
+- La estructura de `index.html` y el comportamiento de `script.js` permanecieron intactos.
+- Se confirmó la actualización del archivo en GitHub; no se verificó visualmente la web publicada.
