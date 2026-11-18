@@ -1,21 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Spotify vs Youtube</title>
-  <!-- El nombre tiene que coincidir con el del archivo: style.css -->
+  <meta name="theme-color" content="#191718">
+  <title>Casa o calle · Spotify vs YouTube</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
+  <header class="site-header">
+    <div class="view-switch" role="group" aria-label="Lugar de escucha">
+  <button type="button" data-view="casa" aria-pressed="false" aria-controls="analisis">Casa</button>
+  <span class="switch-liquid" aria-hidden="true"></span>
+  <button type="button" data-view="calle" aria-pressed="false" aria-controls="analisis">Calle</button>
+</div>
+    <a href="#analisis">El análisis <span aria-hidden="true">↘</span></a>
+  </header>
 
-  <h1><span class="spotify">Spotify</span> <span style="color: white;">vs</span> Youtube</h1>
-  <p>Comparativa de escucha de música entre Spotify y Youtube</p>
+  <main id="inicio">
+    <section class="cover" aria-labelledby="titulo">
+      <div class="cover-copy">
+        <h1 id="titulo">¿Sueno igual<br> dentro y <em>fuera?</em></h1>
+        <p>En casa suelo poner YouTube. Cuando salgo, tiro de Spotify. ¿Cambia solo la app o también lo que escucho?</p>
+        <div class="now-playing" aria-live="polite"></div>
+        <a class="button" href="#analisis">Ver la comparación <span aria-hidden="true">↓</span></a>
+      </div>
 
-  <button id="boton">Ver mi pregunta</button>
-  <p id="texto" hidden>¿Que diferencia de horarios, generos, artistas tengo cuando estoy en casa o en la calle?</p>
+      <div class="listening-station">
+        <div class="turntable">
+          <div class="platter" aria-hidden="true"><span class="record playing-record"></span></div>
+          <span class="tonearm" aria-hidden="true"></span>
+          <span class="power-light" aria-hidden="true"></span>
+          <button class="eject-record" type="button" aria-label="Quitar el disco" disabled></button>
+        </div>
+      <div class="sleeves" aria-label="Las dos caras de la comparación">
+        <button class="sleeve home" type="button" data-vinilo="casa" aria-pressed="false" aria-controls="analisis">
+          <span class="record" aria-hidden="true"></span>
+          <strong>YouTube</strong>
+          <span class="vinyl-stats"><span>En casa</span><strong>680</strong><span>reproducciones</span><small>Dato inventado</small></span>
+        </button>
+        <button class="sleeve away" type="button" data-vinilo="calle" aria-pressed="false" aria-controls="analisis">
+          <span class="record" aria-hidden="true"></span>
+          <strong>Spotify</strong>
+          <span class="vinyl-stats"><span>Fuera de casa</span><strong>940</strong><span>reproducciones</span><small>Dato inventado</small></span>
+        </button>
+      </div>
+      </div>
+    </section>
 
-  <!-- El JavaScript va al final, cuando la página ya está cargada -->
-  <script src="script.js"></script>
+    <section class="analysis" id="analisis" aria-labelledby="pregunta">
+      <div class="analysis-heading">
+        <div>
+          <h2 id="pregunta">¿Qué cambia al salir?</h2>
+          <p>Compararé los dos historiales para ver cuándo escucho música y qué artistas y géneros se repiten en cada plataforma.</p>
+        </div>
+        <p class="status">Periodo previsto: el último año<br><strong id="estado-datos" role="status">Historiales pendientes</strong></p>
+      </div>
+
+      <div class="topics">
+        <details name="comparacion" open>
+          <summary>Horarios</summary>
+          <p>¿A qué horas suelo darle al play en cada plataforma?</p>
+        </details>
+        <details name="comparacion">
+          <summary>Artistas</summary>
+          <p>¿A quién escucho tanto en casa como fuera? ¿Quién se queda en un solo lado?</p>
+        </details>
+        <details name="comparacion">
+          <summary>Géneros</summary>
+          <p>¿Cambian los géneros que más escucho según la plataforma?</p>
+        </details>
+        <details name="comparacion">
+          <summary>Ambiente</summary>
+          <p>Mi hipótesis es que en casa pongo música más tranquila. Queda por comprobar con los datos.</p>
+        </details>
+      </div>
+
+      <p class="method">Uso cada plataforma como pista de dónde escucho. Puede haber excepciones: el historial por sí solo no confirma mi ubicación. Las fechas exactas se decidirán cuando lleguen los datos.</p>
+    </section>
+  </main>
+
+  <footer><a href="#inicio">Volver arriba ↑</a></footer>
 </body>
 </html>
