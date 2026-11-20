@@ -12,6 +12,8 @@ Este archivo recoge decisiones y preferencias duraderas relacionadas con este re
 - 2026-11-04: se revisaron `index.html`, `style.css` y `script.js` sin modificarlos.
 - 2026-11-04: se solicitó crear `personalidad.md`, `contexto.md`, `memoria.md` y `log.md` para dar continuidad al trabajo.
 
+- 2026-11-20: se eligieron vinilos negros con etiqueta central verde para Spotify y roja para YouTube.
+
 ## Cómo mantener la memoria
 - Registrar aquí preferencias y decisiones confirmadas, no suposiciones.
 - Corregir o retirar entradas cuando el usuario lo solicite.

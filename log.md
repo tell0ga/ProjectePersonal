@@ -37,3 +37,8 @@ Historial cronológico del trabajo realizado sobre `tell0ga/ProjectePersonal`.
 ## 2026-11-04 — «VS» en blanco
 - Se modificó únicamente `index.html`: «vs» se envolvió en un `span` con color blanco.
 - Spotify sigue verde y YouTube rojo; no se cambiaron CSS ni JavaScript.
+
+## 2026-11-20 — Versión v1 de la web
+- Se guardó la v1 en ZIP y se comprobó su integridad.
+- El commit `7aef56e` incorporó a `main` la portada con tocadiscos, los discos negros con etiquetas de color, las transiciones al análisis y el ecualizador interactivo.
+- Se comprobó que el commit de la v1 incluía `index.html`, `style.css` y `script.js` en `main`.
