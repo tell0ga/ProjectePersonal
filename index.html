@@ -10,20 +10,24 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="view-switch" role="group" aria-label="Lugar de escucha">
-  <button type="button" data-view="casa" aria-pressed="false" aria-controls="analisis">Casa</button>
+    <div class="view-switch" role="group" aria-label="Plataforma de escucha">
+  <button type="button" data-view="casa" aria-pressed="false" aria-controls="analisis">YouTube</button>
   <span class="switch-liquid" aria-hidden="true"></span>
-  <button type="button" data-view="calle" aria-pressed="false" aria-controls="analisis">Calle</button>
+  <button type="button" data-view="calle" aria-pressed="false" aria-controls="analisis">Spotify</button>
 </div>
+    <div class="sound-wave" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
     <a href="#analisis">El análisis <span aria-hidden="true">↘</span></a>
   </header>
 
   <main id="inicio">
     <section class="cover" aria-labelledby="titulo">
       <div class="cover-copy">
-        <h1 id="titulo">¿Sueno igual<br> dentro y <em>fuera?</em></h1>
+        <h1 id="titulo" tabindex="-1">¿Sueno igual<br> <span class="title-home">dentro</span> y <span class="title-away">fuera</span>?</h1>
         <p>En casa suelo poner YouTube. Cuando salgo, tiro de Spotify. ¿Cambia solo la app o también lo que escucho?</p>
-        <div class="now-playing" aria-live="polite"></div>
         <a class="button" href="#analisis">Ver la comparación <span aria-hidden="true">↓</span></a>
       </div>
 
@@ -31,17 +35,17 @@
         <div class="turntable">
           <div class="platter" aria-hidden="true"><span class="record playing-record"></span></div>
           <span class="tonearm" aria-hidden="true"></span>
-          <span class="power-light" aria-hidden="true"></span>
           <button class="eject-record" type="button" aria-label="Quitar el disco" disabled></button>
+          <button class="start-record" type="button" aria-label="Reproducir disco" aria-controls="analisis" disabled></button>
         </div>
       <div class="sleeves" aria-label="Las dos caras de la comparación">
         <button class="sleeve home" type="button" data-vinilo="casa" aria-pressed="false" aria-controls="analisis">
-          <span class="record" aria-hidden="true"></span>
+          <span class="sleeve-case" aria-hidden="true"><span class="record"></span></span>
           <strong>YouTube</strong>
           <span class="vinyl-stats"><span>En casa</span><strong>680</strong><span>reproducciones</span><small>Dato inventado</small></span>
         </button>
         <button class="sleeve away" type="button" data-vinilo="calle" aria-pressed="false" aria-controls="analisis">
-          <span class="record" aria-hidden="true"></span>
+          <span class="sleeve-case" aria-hidden="true"><span class="record"></span></span>
           <strong>Spotify</strong>
           <span class="vinyl-stats"><span>Fuera de casa</span><strong>940</strong><span>reproducciones</span><small>Dato inventado</small></span>
         </button>
@@ -49,7 +53,7 @@
       </div>
     </section>
 
-    <section class="analysis" id="analisis" aria-labelledby="pregunta">
+    <section class="analysis" id="analisis" tabindex="-1" aria-labelledby="pregunta">
       <div class="analysis-heading">
         <div>
           <h2 id="pregunta">¿Qué cambia al salir?</h2>

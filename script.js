@@ -46,26 +46,24 @@ const vistas = {
 
 const tocadiscos = document.querySelector('.turntable');
 const quitarDisco = tocadiscos.querySelector('.eject-record');
+const iniciarDisco = tocadiscos.querySelector('.start-record');
+const analisis = document.querySelector('#analisis');
+const soportePortada = document.createElement('div');
+soportePortada.className = 'turntable-home';
+tocadiscos.before(soportePortada);
+soportePortada.append(tocadiscos);
+
+const soporteAnalisis = document.createElement('div');
+soporteAnalisis.className = 'turntable-dock';
+soporteAnalisis.hidden = true;
+analisis.append(soporteAnalisis);
+
+let fotogramaTransicion;
 const discoEnPlato = tocadiscos.querySelector('.playing-record');
-const panelEscucha = document.querySelector('.now-playing');
-const resumenVisible = document.createElement('span');
-panelEscucha.append(resumenVisible);
-
-for (const nombre of ['casa', 'calle']) {
-  const reserva = document.createElement('span');
-  reserva.className = 'now-playing-reserve';
-  reserva.setAttribute('aria-hidden', 'true');
-  reserva.textContent = resumenDisco(nombre);
-  panelEscucha.append(reserva);
-}
-
-function resumenDisco(nombre) {
-  const vista = vistas[nombre];
-  return vista.estado + ' · ' + vista.temas.slice(0, 3).join(' ');
-}
 const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
 let vuelo;
 let seleccion = 'comparacion';
+let reproducirAlCargar = false;
 
 function ponerDisco(nombre) {
   if (seleccion === nombre) return;
@@ -76,8 +74,10 @@ function ponerDisco(nombre) {
   vuelo?.remove();
   vuelo = null;
   tocadiscos.classList.remove('is-loading');
+  tocadiscos.classList.remove('is-started');
+  iniciarDisco.setAttribute('aria-label', 'Reproducir disco');
   tocadiscos.dataset.playing = nombre;
-  resumenVisible.textContent = resumenDisco(nombre);
+  iniciarDisco.disabled = false;
 
   if (reducirMovimiento.matches || !disco.animate) return;
 
@@ -91,18 +91,24 @@ function ponerDisco(nombre) {
   document.body.append(discoVolador);
   vuelo = discoVolador;
   tocadiscos.classList.add('is-loading');
+  iniciarDisco.disabled = true;
 
   const movimiento = discoVolador.animate([
     { transform: 'translate(0, 0) scale(1)' },
     { transform: 'translate(' + (destino.left - origen.left) + 'px, ' +
       (destino.top - origen.top) + 'px) scale(' + destino.width / origen.width + ')' },
-  ], { duration: 540, easing: 'cubic-bezier(.22,.75,.24,1)' });
+  ], { duration: 760, easing: 'cubic-bezier(.42, 0, .2, 1)', fill: 'forwards' });
 
   movimiento.onfinish = () => {
     discoVolador.remove();
     if (vuelo === discoVolador) {
       vuelo = null;
       tocadiscos.classList.remove('is-loading');
+      iniciarDisco.disabled = false;
+      if (reproducirAlCargar) {
+        reproducirAlCargar = false;
+        reproducirDisco();
+      }
     }
   };
 }
@@ -119,12 +125,26 @@ function mostrarVista(nombre) {
 }
 
 function seleccionarVista(nombre) {
+  if (nombre !== seleccion) {
+    reproducirAlCargar = false;
+    cancelAnimationFrame(fotogramaTransicion);
+    tocadiscos.style.transform = '';
+    analisis.style.minHeight = '';
+  }
+
+  if (nombre !== seleccion && tocadiscos.parentElement === soporteAnalisis) {
+    soportePortada.append(tocadiscos);
+    soporteAnalisis.hidden = true;
+  }
+
   if (nombre === 'comparacion') {
     vuelo?.remove();
     vuelo = null;
     tocadiscos.classList.remove('is-loading');
     delete tocadiscos.dataset.playing;
-    resumenVisible.textContent = '';
+    tocadiscos.classList.remove('is-started');
+    iniciarDisco.setAttribute('aria-label', 'Reproducir disco');
+    iniciarDisco.disabled = true;
   } else {
     ponerDisco(nombre);
   }
@@ -154,7 +174,7 @@ vinilos.forEach((vinilo) => {
   vinilo.addEventListener('click', () => seleccionarVista(nombre));
 });
 
-quitarDisco.addEventListener('click', () => {
+function expulsarDisco() {
   const nombre = seleccion;
   const disco = document.querySelector('[data-vinilo="' + nombre + '"] .record');
   const origen = (vuelo || discoEnPlato).getBoundingClientRect();
@@ -172,16 +192,128 @@ quitarDisco.addEventListener('click', () => {
   document.body.append(discoVolador);
   vuelo = discoVolador;
 
-  const regreso = disco.animate([{ opacity: 0 }, { opacity: 0 }], 480);
+  const duracionRegreso = 680;
+  const regreso = disco.animate([{ opacity: 0 }, { opacity: 0 }], duracionRegreso);
   const movimiento = discoVolador.animate([
     { transform: 'translate(0, 0) scale(1)' },
     { transform: 'translate(' + (destino.left - origen.left) + 'px, ' +
       (destino.top - origen.top) + 'px) scale(' + destino.width / origen.width + ')' },
-  ], { duration: 480, easing: 'cubic-bezier(.22,.75,.24,1)' });
+  ], { duration: duracionRegreso, easing: 'cubic-bezier(.42, 0, .2, 1)', fill: 'forwards' });
 
   movimiento.onfinish = () => {
     discoVolador.remove();
     regreso.cancel();
     if (vuelo === discoVolador) vuelo = null;
   };
+}
+
+quitarDisco.addEventListener('click', () => {
+  if (tocadiscos.parentElement !== soporteAnalisis) {
+    expulsarDisco();
+    return;
+  }
+
+  const origen = tocadiscos.getBoundingClientRect();
+  analisis.style.minHeight = analisis.getBoundingClientRect().height + 'px';
+  tocadiscos.classList.remove('is-started');
+  iniciarDisco.setAttribute('aria-label', 'Reproducir disco');
+  iniciarDisco.disabled = true;
+  quitarDisco.disabled = true;
+  soportePortada.append(tocadiscos);
+  soporteAnalisis.hidden = true;
+
+  deslizarTocadiscos(origen, soportePortada, 0, () => {
+    analisis.style.minHeight = '';
+    expulsarDisco();
+    document.querySelector('#titulo').focus({ preventScroll: true });
+  });
 });
+function reproducirDisco() {
+  if (tocadiscos.classList.contains('is-loading')) {
+    reproducirAlCargar = true;
+    return;
+  }
+
+  if (iniciarDisco.disabled || tocadiscos.classList.contains('is-started')) return;
+
+  iniciarDisco.setAttribute('aria-label', 'Detener disco');
+  if (tocadiscos.parentElement === soporteAnalisis) {
+    tocadiscos.classList.add('is-started');
+    return;
+  }
+
+  const origen = tocadiscos.getBoundingClientRect();
+  cancelAnimationFrame(fotogramaTransicion);
+
+  tocadiscos.classList.add('is-started');
+  tocadiscos.style.transform = '';
+  soporteAnalisis.hidden = false;
+  soporteAnalisis.append(tocadiscos);
+
+  const scrollFinal = Math.max(0, Math.min(
+    analisis.getBoundingClientRect().top + window.scrollY - 16,
+    document.documentElement.scrollHeight - window.innerHeight,
+  ));
+  deslizarTocadiscos(origen, soporteAnalisis, scrollFinal, () => {
+    analisis.focus({ preventScroll: true });
+  });
+}
+
+iniciarDisco.addEventListener('click', () => {
+  if (tocadiscos.classList.contains('is-started')) {
+    tocadiscos.classList.remove('is-started');
+    iniciarDisco.setAttribute('aria-label', 'Reproducir disco');
+    return;
+  }
+
+  reproducirDisco();
+});
+
+enlaceAnalisis.addEventListener('click', (evento) => {
+  if (seleccion === 'comparacion' || evento.ctrlKey || evento.metaKey ||
+      evento.shiftKey || evento.altKey) return;
+
+  if (tocadiscos.parentElement === soporteAnalisis) {
+    reproducirDisco();
+    return;
+  }
+
+  evento.preventDefault();
+  reproducirDisco();
+});
+
+function deslizarTocadiscos(origen, soporte, scrollFinal, alTerminar) {
+  cancelAnimationFrame(fotogramaTransicion);
+
+  if (reducirMovimiento.matches) {
+    window.scrollTo({ top: scrollFinal, behavior: 'instant' });
+    alTerminar();
+    return;
+  }
+
+  const scrollInicial = window.scrollY;
+  const duracion = 1150;
+  const inicio = performance.now();
+
+  function deslizar(ahora) {
+    const progreso = Math.min(1, Math.max(0, (ahora - inicio) / duracion));
+    const avance = progreso * progreso * (3 - 2 * progreso);
+    window.scrollTo({ top: scrollInicial + (scrollFinal - scrollInicial) * avance, behavior: 'instant' });
+
+    const destino = soporte.getBoundingClientRect();
+    const escala = 1 + (origen.width / destino.width - 1) * (1 - avance);
+    const x = (origen.left - destino.left) * (1 - avance);
+    const yFinal = destino.top + window.scrollY - scrollFinal;
+    const y = origen.top + (yFinal - origen.top) * avance - destino.top;
+    tocadiscos.style.transform = 'translate(' + x + 'px, ' + y + 'px) scale(' + escala + ')';
+
+    if (progreso < 1) {
+      fotogramaTransicion = requestAnimationFrame(deslizar);
+    } else {
+      tocadiscos.style.transform = '';
+      alTerminar();
+    }
+  }
+
+  deslizar(inicio);
+}
