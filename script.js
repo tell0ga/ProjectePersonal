@@ -20,6 +20,12 @@ const estadoDatos = document.querySelector('#estado-datos');
 const enlaceAnalisis = document.querySelector('.cover .button');
 const descripciones = document.querySelectorAll('.topics details p');
 
+const panelYouTube = document.querySelector('#youtube-stats');
+const temasComparacion = document.querySelector('.topics');
+const notaComparacion = document.querySelector('.method');
+const periodoDatos = document.querySelector('#periodo-datos');
+const periodoComparacion = periodoDatos.textContent;
+
 const vistas = {
   comparacion: {
     titulo: tituloAnalisis.textContent,
@@ -30,10 +36,9 @@ const vistas = {
   },
   casa: {
     titulo: 'En casa · YouTube',
-    descripcion: '680 reproducciones en el historial de ejemplo.',
-    estado: 'YouTube · Datos ficticios',
+    descripcion: 'Mi historial de música en YouTube durante un año.',
+    estado: 'YouTube · Historial filtrado',
     enlace: 'Ver análisis de YouTube ',
-    temas: ['Hora punta: 22:00.', 'Artista más escuchado: Sade.', 'Género principal: soul.', 'Ambiente predominante: tranquilo.'],
   },
   calle: {
     titulo: 'En la calle · Spotify',
@@ -119,9 +124,17 @@ function mostrarVista(nombre) {
   tituloAnalisis.textContent = vista.titulo;
   descripcionAnalisis.textContent = vista.descripcion;
   estadoDatos.textContent = vista.estado;
-  descripciones.forEach((parrafo, indice) => {
-    parrafo.textContent = vista.temas[indice];
-  });
+  const esYouTube = nombre === 'casa';
+  panelYouTube.hidden = !(esYouTube && seleccion === 'casa' &&
+    tocadiscos.classList.contains('is-started'));
+  temasComparacion.hidden = esYouTube;
+  notaComparacion.hidden = esYouTube;
+  periodoDatos.textContent = esYouTube ? '1 nov 2025 a 1 nov 2026' : periodoComparacion;
+  if (vista.temas) {
+    descripciones.forEach((parrafo, indice) => {
+      parrafo.textContent = vista.temas[indice];
+    });
+  }
 }
 
 function seleccionarVista(nombre) {
@@ -239,6 +252,7 @@ function reproducirDisco() {
   iniciarDisco.setAttribute('aria-label', 'Detener disco');
   if (tocadiscos.parentElement === soporteAnalisis) {
     tocadiscos.classList.add('is-started');
+    mostrarVista(seleccion);
     return;
   }
 
@@ -249,6 +263,7 @@ function reproducirDisco() {
   tocadiscos.style.transform = '';
   soporteAnalisis.hidden = false;
   soporteAnalisis.append(tocadiscos);
+  mostrarVista(seleccion);
 
   const scrollFinal = Math.max(0, Math.min(
     analisis.getBoundingClientRect().top + window.scrollY - 16,
